@@ -1,3 +1,8 @@
+// example .bumped file
+
+// define version
 version: 1.0.0
+
+// files to bump
 bumps:
  - example.txt
