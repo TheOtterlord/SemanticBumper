@@ -8,6 +8,20 @@ import (
 	"strings"
 )
 
+func help() {
+	msg := `SemanticBumper - A semantic version bumper program
+
+USAGE:
+	SemanticBumper [filename]
+	
+OPTIONS:
+	filename - The name of your .bumped file
+	
+For more help, visit: https://github.com/TheOtterlord/SemanticBumper
+`
+	fmt.Printf(msg + "\n")
+}
+
 func readfile(filename string) string {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -84,8 +98,13 @@ func main() {
 	fmt.Printf("Running SemanticBumper Version 0.1.0\n")
 	if len(os.Args) < 2 {
 		fmt.Printf("ERROR: No target file specified\n")
+		help()
 		return
 	}
 	filename := os.Args[1]
+	if filename == "--help" || filename == "help" {
+		help()
+		return
+	}
 	bump(filename)
 }
