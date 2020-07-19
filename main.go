@@ -106,7 +106,7 @@ func makeInitFile() {
 }
 
 func main() {
-	fmt.Printf("Running SemanticBumper Version 0.1.0\n")
+	fmt.Printf("Running SemanticBumper Version 0.1.0 (Released 19/07/2020)\n")
 	if len(os.Args) < 2 {
 		fmt.Printf("ERROR: No target file specified\n")
 		help()

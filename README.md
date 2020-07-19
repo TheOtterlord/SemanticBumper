@@ -24,6 +24,9 @@ You can update SemanticBumper by calling this command.
 go get -u github.com/TheOtterlord/SemanticBumper
 ```
 
+Keep track of new releases by [watching](https://docs.github.com/en/github/getting-started-with-github/be-social#watching-a-repository) this repository. 
+All releases are tracked in the [changelog](https://github.com/TheOtterlord/SemanticBumper/blob/master/CHANGELOG.md).
+
 
 ## Usage
 
