@@ -16,6 +16,15 @@ go get github.com/TheOtterlord/SemanticBumper
 ```
 
 
+### Update
+
+You can update SemanticBumper by calling this command. 
+
+```bash
+go get -u github.com/TheOtterlord/SemanticBumper
+```
+
+
 ## Usage
 
 To bump files to a new version, you must create a `.bumped` file that follows the [schema](#bumped-schema) provided.
