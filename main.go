@@ -66,11 +66,16 @@ func bump(filename string) {
 		if strings.HasPrefix(command, "version") {
 			version = strings.Split(command, "version")[1]
 			version = strings.Trim(version, "\r: ")
+			// if version is not semver
+			if !re.MatchString(version) {
+				fmt.Printf("ERROR: version on line %d does not match semver specification. For more information see: https://semver.org/", i)
+				return
+			}
 			bumps = false
 		} else if strings.HasPrefix(command, "bumps") {
 			bumps = true
 		} else if strings.HasPrefix(command, "//") {
-			// it's a comment
+			// it's a comment:
 			// do nothing
 		} else if strings.HasPrefix(command, "-") {
 			if bumps {

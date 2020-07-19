@@ -18,7 +18,7 @@ go get github.com/TheOtterlord/SemanticBumper
 
 ### Update
 
-You can update SemanticBumper by calling this command. 
+You can update SemanticBumper by calling this command.
 
 ```bash
 go get -u github.com/TheOtterlord/SemanticBumper
