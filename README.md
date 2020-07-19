@@ -29,11 +29,22 @@ SemanticBumper myfile.bumped
 ```
 
 
+### Init
+
+Calling `SemanticBumper init` will create a `version.bumped` file in the current directory.
+
+
+### Help
+
+You can get information about the CLI by calling `SemanticBumper help`.
+It will display information about the options and how to use them.
+
+
 ## Bumped Schema
 
 The `.bumped` files follow a simple schema.
 
-At the top, the `version` field specifies what the **new** version is. 
+At the top, the `version` field specifies what the **new** version is.
 
 ```bumped
 version: 0.1.1

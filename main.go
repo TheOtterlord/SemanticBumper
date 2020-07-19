@@ -94,6 +94,12 @@ func bump(filename string) {
 	}
 }
 
+func makeInitFile() {
+	if writefile("version.bumped", "version: 1.0.0\nbumps:\n") {
+		fmt.Printf("Successfully created version.bumped\n")
+	}
+}
+
 func main() {
 	fmt.Printf("Running SemanticBumper Version 0.1.0\n")
 	if len(os.Args) < 2 {
@@ -104,6 +110,10 @@ func main() {
 	filename := os.Args[1]
 	if filename == "--help" || filename == "help" {
 		help()
+		return
+	}
+	if filename == "init" {
+		makeInitFile()
 		return
 	}
 	bump(filename)
