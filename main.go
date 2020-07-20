@@ -12,10 +12,15 @@ func help() {
 	msg := `SemanticBumper - A semantic version bumper program
 
 USAGE:
-	SemanticBumper [filename]
-	
+	SemanticBumper [filename/command]
+
 OPTIONS:
 	filename - The name of your .bumped file
+	command - Must be an option of COMMANDS. See below
+
+COMMANDS:
+	init - Creates a version.bumped file with basic fields
+	help - Displays help on SemanticBumper
 	
 For more help, visit: https://github.com/TheOtterlord/SemanticBumper
 `
@@ -100,13 +105,13 @@ func bump(filename string) {
 }
 
 func makeInitFile() {
-	if writefile("version.bumped", "version: 1.0.0\nbumps:\n") {
+	if writefile("version.bumped", "version: 0.1.1\nbumps:\n") {
 		fmt.Printf("Successfully created version.bumped\n")
 	}
 }
 
 func main() {
-	fmt.Printf("Running SemanticBumper Version 0.1.0 (Released 19/07/2020)\n")
+	fmt.Printf("Running SemanticBumper Version 0.1.1 (Released 20/07/2020)\n")
 	if len(os.Args) < 2 {
 		fmt.Printf("ERROR: No target file specified\n")
 		help()

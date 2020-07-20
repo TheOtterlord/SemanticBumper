@@ -1,0 +1,6 @@
+// define version
+version: 0.1.1
+
+// files to bump
+bumps:
+ - main.go
