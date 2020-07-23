@@ -5,51 +5,54 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
+
+	"github.com/gookit/color"
 )
 
+// Print help information
 func help() {
-	msg := `SemanticBumper - A semantic version bumper program
+	fmt.Printf(`
+SemanticBumper - A semantic version bumper
 
 USAGE:
-	SemanticBumper [filename/command]
-
+	SemanticBumper <filename/command>
+	
 OPTIONS:
-	filename - The name of your .bumped file
-	command - Must be an option of COMMANDS. See below
-
+	filename - path to a valid .bumped file
+	command - Must be an option from COMMANDS. See below
+	
 COMMANDS:
 	init - Creates a version.bumped file with basic fields
 	help - Displays help on SemanticBumper
-	
+		
 For more help, visit: https://github.com/TheOtterlord/SemanticBumper
-`
-	fmt.Printf(msg + "\n")
+`)
 }
 
+// Read data from a file
 func readfile(filename string) string {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
-		fmt.Println("File reading error", err)
+		color.Red.Println("File reading error", err)
 		return ""
 	}
 	return string(data)
 }
 
+// Write data to a file
 func writefile(filename string, contents string) bool {
 	file, err := os.Create(filename)
 	if err != nil {
 		fmt.Println(err)
 		return false
 	}
-	l, err := file.WriteString(contents)
+	_, err = file.WriteString(contents)
 	if err != nil {
 		fmt.Println(err)
 		file.Close()
 		return false
-	}
-	if l == 0 {
-		fmt.Printf("No bytes written. Potential error")
 	}
 	err = file.Close()
 	if err != nil {
@@ -59,11 +62,13 @@ func writefile(filename string, contents string) bool {
 	return true
 }
 
-func bump(filename string) {
-	contents := readfile(filename)
+// Read a .bumped file and execute it
+func bumper(fn string) {
+	contents := readfile(fn)
 	lines := strings.Split(contents, "\n")
 	version := ""
 	bumps := false
+	// contains regex for semantc version
 	re := regexp.MustCompile(`(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?`)
 	for i := 0; i < len(lines); i++ {
 		line := lines[i]
@@ -73,14 +78,13 @@ func bump(filename string) {
 			version = strings.Trim(version, "\r: ")
 			// if version is not semver
 			if !re.MatchString(version) {
-				fmt.Printf("ERROR: version on line %d does not match semver specification. For more information see: https://semver.org/", i)
+				color.Red.Printf("Error: version %s on line %d does not match semver specification. For more information, see: https://semver.org\n", version, i)
 				return
 			}
 			bumps = false
 		} else if strings.HasPrefix(command, "bumps") {
 			bumps = true
 		} else if strings.HasPrefix(command, "//") {
-			// it's a comment:
 			// do nothing
 		} else if strings.HasPrefix(command, "-") {
 			if bumps {
@@ -90,41 +94,47 @@ func bump(filename string) {
 				if raw != "" {
 					new := re.ReplaceAllString(raw, version)
 					if writefile(file, new) {
-						fmt.Printf("Successfully updated " + file + " to " + version + "\n")
+						fmt.Println("Successfully updated " + file + " to " + version)
 					} else {
-						fmt.Printf("Failed to update " + file + " to " + version + "\n")
+						color.Red.Println("Failed to update " + file + " to " + version)
 					}
 				}
-			} else if command == "" {
-				// empty line
-			} else {
-				fmt.Printf("Error: Failed to parse \"" + command + "\"")
 			}
+		} else if command == "" {
+			// empty line
+		} else {
+			color.Red.Printf("Error: Failed to parse \"%s\" on line %d\n", command, i)
+			return
 		}
 	}
 }
 
-func makeInitFile() {
-	if writefile("version.bumped", "version: 0.1.1\nbumps:\n") {
-		fmt.Printf("Successfully created version.bumped\n")
-	}
-}
-
 func main() {
-	fmt.Printf("Running SemanticBumper Version 0.1.1 (Released 20/07/2020)\n")
-	if len(os.Args) < 2 {
-		fmt.Printf("ERROR: No target file specified\n")
+	fmt.Println("Running SemanticBumper version 1.0.0")
+	// check that we only have our 1 command/filename
+	argsLen := len(os.Args) - 1
+	if argsLen != 1 {
+		color.Red.Println("Error: expected 1 argument, received " + strconv.Itoa(argsLen))
 		help()
 		return
 	}
 	filename := os.Args[1]
-	if filename == "--help" || filename == "help" {
+	if filename == "help" {
 		help()
 		return
 	}
+	// if init command used: create a basic .bumped file
 	if filename == "init" {
-		makeInitFile()
+		if writefile("version.bumped", "version: your_version_name\nbumps:\n") {
+			fmt.Println("Successfully created version.bumped")
+		} else {
+			color.Red.Println("Failed to create version.bumped")
+		}
 		return
 	}
-	bump(filename)
+	// process .bumped file
+	if !strings.HasSuffix(filename, ".bumped") {
+		color.Warn.Println("Warning: \"" + filename + "\" should use .bumped extension")
+	}
+	bumper(filename)
 }

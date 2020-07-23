@@ -1,20 +1,30 @@
 # SemanticBumper - A version bumper
 
-SemanticBumper is a version bumping CLI program built using [Go](https://golang.org).
-The idea for this project was taken from an [OSI issue](https://github.com/open-source-ideas/open-source-ideas/issues/239).
+SemanticBumper is a CLI that makes version bumping simple, even for the largest of projects.
 
-A version bumping program built with Go.
+SemanticBumper will look through files that you specify in your [.bumped](#bumped-schema) file, replacing all text matching the semver specification with your new version.
+
+This project originated from an [open-source-ideas issue](https://github.com/open-source-ideas/open-source-ideas/issues/239). 
+
+
+## Contents
+
+- [Install](#install)
+- [Update](#update)
+- [Usage](#usage)
+- [Bumped Schema](#bumped-schema)
+- [Contributing](#contributing)
+- [License](#license)
 
 
 ## Install
 
-To install SemanticBumper, you must have installed [Go](https://golang.org).
+To install SemanticBumper, you must have [Go](https://golang.org) installed on your device.
 You can install SemanticBumper with the following command:
 
 ```bash
 go get github.com/TheOtterlord/SemanticBumper
 ```
-
 
 ### Update
 
@@ -25,7 +35,7 @@ go get -u github.com/TheOtterlord/SemanticBumper
 ```
 
 Keep track of new releases by [watching](https://docs.github.com/en/github/getting-started-with-github/be-social#watching-a-repository) this repository. 
-All releases are tracked in the [changelog](https://github.com/TheOtterlord/SemanticBumper/blob/master/CHANGELOG.md).
+All new releases are tracked in the [changelog](https://github.com/TheOtterlord/SemanticBumper/blob/master/CHANGELOG.md).
 
 
 ## Usage
@@ -37,19 +47,13 @@ Run `SemanticBumper myfile.bumped` using your `.bumped` file in place of `myfile
 Example:
 
 ```bash
-SemanticBumper myfile.bumped
+SemanticBumper version.bumped
 ```
 
 
 ### Init
 
 Calling `SemanticBumper init` will create a `version.bumped` file in the current directory.
-
-
-### Help
-
-You can get information about the CLI by calling `SemanticBumper help`.
-It will display information about the options and how to use them.
 
 
 ## Bumped Schema
@@ -97,7 +101,7 @@ bumps:
  - main.example
 
 version: 1.0.1
- - lib.example
+ - lib/mod.example
 ```
 
 TIP: You can also add comments using a `//` prefix.
@@ -113,10 +117,16 @@ bumps:
 
 // bump my library
 version: 1.0.1
- - lib.example
+ - lib/mod.example
 ```
+
+
+## Contributing
+
+This project is open-source and accepts contributions from the community. 
+If you wish to contribute, please read our [contributing](https://github.com/TheOtterlord/SemanticBumper/blob/master/CONTRIBUTING.md) guide to get started.
 
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+This software is distributed under the [MIT](https://choosealicense.com/licenses/mit/) license. 
